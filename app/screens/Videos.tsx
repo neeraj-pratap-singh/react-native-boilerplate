@@ -1,87 +1,64 @@
-import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+// import {useSelector, useDispatch} from 'react-redux';
 
-import {useTheme} from '../theme/useTheme';
+// import {useTheme} from '../theme/useTheme';
 import Layout from '../components/Layout';
-import NetwokExampleCard from '../components/NetwokExampleCard';
 
-import {RootState, AppDispatch} from '../store/store';
-import {fetchUser, createUser} from '../store/dummyNetwork';
-
-const dummyData = {
-  name: 'Harry',
-  email: 'harry@hogwarts.com',
-};
+import Shorts from '../../app/components/Shorts';
 
 export default function Videos() {
-  const {theme} = useTheme();
-  const dispatch = useDispatch<AppDispatch>();
+  // const {theme} = useTheme();
+  // const dispatch = useDispatch<AppDispatch>();
+  const [items, setItems] = useState([]);
 
-  const userStatus = useSelector(
-    (state: RootState) => state.dummyNetwork.status,
-  );
-
-  const user = useSelector((state: RootState) => state.dummyNetwork.data);
-  const newUser = useSelector((state: RootState) => state.dummyNetwork.newUser);
-
-  const fetchData = () => {
-    dispatch(fetchUser());
+  const fetchPlaylistData = async () => {
+    const response = await fetch(
+      'https://www.googleapis.com/youtube/v3/search?key=AIzaSyAetwy-pVtiQicM51c8EwVmIQMSOatmNxk&channelId=UCL_3_9PhDyZXu1oexm8gtFQ&part=snippet,id&order=date&maxResults=3',
+    );
+    const json = await response.json();
+    const tempItems = json.items.map(
+      (item: {id: {videoId: any}}, index: any) => {
+        return {
+          id: index,
+          videoId: item.id.videoId,
+        };
+      },
+    );
+    setItems(tempItems);
   };
 
-  const postData = () => {
-    dispatch(createUser(dummyData));
-  };
+  useEffect(() => {
+    fetchPlaylistData();
+  }, []);
+
+  // const userStatus = useSelector(
+  //   (state: RootState) => state.dummyNetwork.status,
+  // );
+
+  // const user = useSelector((state: RootState) => state.dummyNetwork.data);
+  // const newUser = useSelector((state: RootState) => state.dummyNetwork.newUser);
+
+  // const fetchData = () => {
+  //   dispatch(fetchUser());
+  // };
+
+  // const postData = () => {
+  //   dispatch(createUser(dummyData));
+  // };
 
   return (
     <Layout>
-      <ScrollView contentContainerStyle={styles.scrollview}>
-        {/* Get Card */}
-        <NetwokExampleCard
-          title="GET"
-          loading={userStatus === 'loading'}
-          onPress={fetchData}>
-          <Text style={[styles.url, {color: theme.color}]}>
-            URL: https://jsonplaceholder.typicode.com/users/1
-          </Text>
-          <Text style={[styles.url, {color: theme.color}]}>{userStatus}</Text>
-
-          {userStatus === 'succeeded' ? (
-            <>
-              <Text style={{color: theme.color}}>{user.name}</Text>
-              <Text style={{color: theme.color}}>{user.email}</Text>
-            </>
-          ) : (
-            <>
-              <Text style={[styles.url, {color: theme.color}]}>
-                Press fire to fetch the data
-              </Text>
-            </>
-          )}
-        </NetwokExampleCard>
-        
-      </ScrollView>
+      <View style={styles.view}>
+        <Shorts items={items} />
+      </View>
     </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollview: {
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-  },
-  url: {
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  code: {
-    fontSize: 10,
-  },
-  row: {
-    flexDirection: 'row',
-    gap: 20,
-  },
-  grid: {
-    flex: 0.5,
+  view: {
+    flex: 1,
+    alignSelf: 'stretch',
   },
 });

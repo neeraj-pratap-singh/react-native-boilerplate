@@ -26,7 +26,7 @@ import {updateToken} from '../store/userSlice';
 // import Login from '../screens/auth/Login';
 import Tasks from '../screens/Tasks';
 import Videos from '../screens/Videos';
-import Settings from '../screens/Settings';
+import Search from '../screens/Search';
 
 // Icons for Bottom Tab Navigation
 const homeIcon = ({color}: {color: ColorValue | number}) => (
@@ -96,7 +96,7 @@ export default function RootNavigation() {
         />
         <Tab.Screen
           name="Search"
-          component={Settings}
+          component={Search}
           options={{
             // headerShown: false,
             tabBarIcon: searchIcon,
