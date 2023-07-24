@@ -25,18 +25,18 @@ import {updateToken} from '../store/userSlice';
 // Screens
 // import Login from '../screens/auth/Login';
 import Tasks from '../screens/Tasks';
-import NetworkExample from '../screens/NetworkExample';
-import Settings from '../screens/Settings';
+import Videos from '../screens/Videos';
+import Search from '../screens/Search';
 
 // Icons for Bottom Tab Navigation
 const homeIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="ios-list-sharp" size={30} color={color} />
+  <Icon name="home-sharp" size={24} color={color} />
 );
-const networkIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="wifi-sharp" size={24} color={color} />
+const videoIcon = ({color}: {color: ColorValue | number}) => (
+  <Icon name="play-circle-outline" size={24} color={color} />
 );
-const settingsIcon = ({color}: {color: ColorValue | number}) => (
-  <Icon name="ios-settings-sharp" size={24} color={color} />
+const searchIcon = ({color}: {color: ColorValue | number}) => (
+  <Icon name="search-outline" size={24} color={color} />
 );
 
 // Root Navigation
@@ -70,35 +70,36 @@ export default function RootNavigation() {
           },
           tabBarInactiveTintColor: theme.color,
           tabBarActiveTintColor: theme.primary,
-          headerStyle: {backgroundColor: theme.cardBg, height: 50},
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            color: theme.primary,
-            fontSize: 18,
-            fontWeight: 'bold',
-          },
-          tabBarShowLabel: false,
+          headerShown: false,
+          // headerStyle: {backgroundColor: theme.cardBg, height: 50},
+          // headerTitleAlign: 'center',
+          // headerTitleStyle: {
+          //   color: theme.primary,
+          //   fontSize: 18,
+          //   fontWeight: 'bold',
+          // },
+          tabBarShowLabel: true,
         }}>
         <Tab.Screen
-          name="To Do"
+          name="Home"
           component={Tasks}
           options={{
             tabBarIcon: homeIcon,
           }}
         />
         <Tab.Screen
-          name="NetworkExample"
-          component={NetworkExample}
+          name="Video"
+          component={Videos}
           options={{
-            tabBarIcon: networkIcon,
+            tabBarIcon: videoIcon,
           }}
         />
         <Tab.Screen
-          name="Settings"
-          component={Settings}
+          name="Search"
+          component={Search}
           options={{
             // headerShown: false,
-            tabBarIcon: settingsIcon,
+            tabBarIcon: searchIcon,
           }}
         />
       </Tab.Navigator>
