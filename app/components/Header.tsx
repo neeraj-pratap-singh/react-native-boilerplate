@@ -6,23 +6,32 @@ import {
   TouchableOpacity,
   StyleSheet,
   Share,
+  Dimensions,
+  Linking,
+  Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import YoutubePlayer from '@dooboo/react-native-youtube-iframe';
 interface HeaderProps {
   // Remove the prop since we are defining the function within the component
 }
 
 const Header: React.FC<HeaderProps> = () => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isLiveModalVisible, setLiveModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const toggleLiveModal = () => {
+    setLiveModalVisible(!isLiveModalVisible);
+  };
+
   const handleRightImagePress = () => {
     // Handle the press event for the right-side image here
+    toggleLiveModal();
     console.log('Right image pressed');
   };
 
@@ -46,19 +55,38 @@ const Header: React.FC<HeaderProps> = () => {
     }
   };
 
+  const openAppRating = () => {
+    const APP_PACKAGE_NAME = 'com.app.bansalnews'; // Replace with your app's package name on the Play Store
+    const PLAY_STORE_URL = `market://details?id=${APP_PACKAGE_NAME}`;
+
+    Linking.canOpenURL(PLAY_STORE_URL)
+      .then(supported => {
+        if (supported) {
+          return Linking.openURL(PLAY_STORE_URL);
+        } else {
+          // If the Play Store app is not installed, open the app page in the browser
+          const PLAY_STORE_WEB_URL = `https://play.google.com/store/apps/details?id=${APP_PACKAGE_NAME}`;
+          return Linking.openURL(PLAY_STORE_WEB_URL);
+        }
+      })
+      .catch(() => {
+        Alert.alert('Error', 'An error occurred while opening the Play Store.');
+      });
+  };
+
   return (
     <View style={styles.container}>
       <>
-        <TouchableOpacity onPress={handleRightImagePress}>
+        <TouchableOpacity>
           <Image
             source={require('../assets/images/app_logo.png')}
             style={styles.logo}
           />
         </TouchableOpacity>
         <View style={styles.rightContainer}>
-          <TouchableOpacity onPress={handleMoreOptions}>
+          <TouchableOpacity onPress={handleRightImagePress}>
             <Image
-              source={require('../assets/images/app_logo.png')}
+              source={require('../assets/images/live.png')}
               style={styles.rightImage}
             />
           </TouchableOpacity>
@@ -94,7 +122,7 @@ const Header: React.FC<HeaderProps> = () => {
               <Text style={styles.optionText}>Share App</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOptionSelection('Rate App')}>
+          <TouchableOpacity onPress={() => openAppRating()}>
             <View style={styles.optionContainer}>
               <Icon name="star" size={24} color="black" />
               <Text style={styles.optionText}>Rate App</Text>
@@ -109,6 +137,29 @@ const Header: React.FC<HeaderProps> = () => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <Modal
+        isVisible={isLiveModalVisible}
+        onBackdropPress={toggleLiveModal}
+        style={styles.modal}
+        backdropOpacity={0.5}
+        supportedOrientations={['landscape']}>
+        <View style={styles.modalLiveContainer}>
+          <YoutubePlayer
+            height={Dimensions.get('window').height}
+            play={true}
+            videoId="Z6GpI1smQzc" // Replace with the actual YouTube video ID you want to play
+            // onChangeState={event => console.log('Video state:', event.state)}
+          />
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => {
+              // Close the fullscreen video on close button press
+              toggleLiveModal();
+            }}>
+            <Icon name="close" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -120,19 +171,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 5,
   },
   logo: {
-    width: 100,
-    height: 30,
+    width: 70,
+    height: 40,
   },
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   rightImage: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
     marginRight: 8,
   },
   moreOptions: {
@@ -149,6 +200,12 @@ const styles = StyleSheet.create({
     padding: 16,
     width: 200,
   },
+  modalLiveContainer: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 16,
+    width: '100%',
+  },
   optionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -158,6 +215,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 8,
     color: 'black',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    elevation: 2,
   },
 });
 
