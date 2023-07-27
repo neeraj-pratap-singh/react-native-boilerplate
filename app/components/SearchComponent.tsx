@@ -28,7 +28,6 @@ const SearchComponent: React.FC<SearchProps> = ({onSearch}) => {
         value={searchQuery}
         onChangeText={text => {
           setSearchQuery(text);
-          handleSearch(); // Call handleSearch on each input change
         }}
       />
       <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>

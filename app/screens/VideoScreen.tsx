@@ -28,7 +28,7 @@ const VideoScreen: React.FC = () => {
             channelId: 'UCL_3_9PhDyZXu1oexm8gtFQ',
             part: 'snippet,id',
             order: 'date',
-            maxResults: 5,
+            maxResults: 50,
           },
         },
       );

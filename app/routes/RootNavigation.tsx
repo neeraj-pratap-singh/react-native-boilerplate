@@ -13,6 +13,7 @@ import ContactUs from '../screens/ContactUs'; // Add this import
 import AboutUs from '../screens/AboutUs'; // Add this import
 import Header from '../components/Header'; // Add this import
 import VideoScreen from '../screens/VideoScreen';
+import NewsDetail from '../screens/NewsDetail';
 
 const homeIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="home-sharp" size={24} color={color} />
@@ -90,6 +91,13 @@ export function AppNavigator() {
       <Stack.Screen
         name="AboutUs"
         component={AboutUs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="NewsDetail"
+        component={NewsDetail}
         options={{
           headerShown: false,
         }}
