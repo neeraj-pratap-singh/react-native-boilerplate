@@ -56,7 +56,9 @@ const VideoScreen: React.FC = () => {
           source={{uri: item.snippet?.thumbnails?.default?.url}}
           style={styles.thumbnailImage}
         />
-        <Text style={styles.videoTitle}>{item.snippet?.title}</Text>
+        <Text numberOfLines={4} ellipsizeMode="tail" style={styles.videoTitle}>
+          {item.snippet?.title}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -85,11 +87,11 @@ const styles = StyleSheet.create({
   },
   videoItemContainer: {
     flex: 1,
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 5,
     marginBottom: 4,
-    backgroundColor: 'lime',
   },
   thumbnailImage: {
     width: 120,
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
   videoTitle: {
     fontSize: 16,
     color: '#000',
+    width: '60%',
   },
 });
 
