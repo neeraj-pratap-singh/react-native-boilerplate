@@ -1,27 +1,18 @@
-/**
- * This is a Navigation file which is wired already with Bottom Tab Navigation.
- * If you don't like it, feel free to replace with your own setup.
- * Uncomment commented lines from return() of RootNavigation to wire Login flow
- */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {ColorValue} from 'react-native';
-
-import {NavigationContainer} from '@react-navigation/native';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-// Hook for theme change (Light/Dark Mode)
 import {useTheme} from '../theme/useTheme';
-// Get Value from Keyring (Encrypted token)
-
-// Screens
-// import Login from '../screens/auth/Login';
+import Home from '../screens/Home';
 import Videos from '../screens/Videos';
 import Search from '../screens/Search';
-import Home from '../screens/Home';
+import ContactUs from '../screens/ContactUs'; // Add this import
+import AboutUs from '../screens/AboutUs'; // Add this import
+import Header from '../components/Header'; // Add this import
 
-// Icons for Bottom Tab Navigation
 const homeIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="home-sharp" size={24} color={color} />
 );
@@ -32,50 +23,76 @@ const searchIcon = ({color}: {color: ColorValue | number}) => (
   <Icon name="search-outline" size={24} color={color} />
 );
 
-// Root Navigation
-// const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function RootNavigation() {
   const {theme} = useTheme();
 
   return (
-    <NavigationContainer>
-      {/* {user.token ? ( */}
-      <Tab.Navigator
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor: theme.cardBg,
-            borderTopColor: theme?.layoutBg,
-          },
-          tabBarInactiveTintColor: theme.color,
-          tabBarActiveTintColor: theme.primary,
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: theme.cardBg,
+          borderTopColor: theme?.layoutBg,
+        },
+        tabBarInactiveTintColor: theme.color,
+        tabBarActiveTintColor: theme.primary,
+        // headerShown: false,
+        tabBarShowLabel: true,
+        header: () => <Header />,
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: homeIcon,
+        }}
+      />
+      <Tab.Screen
+        name="Video"
+        component={Videos}
+        options={{
+          tabBarIcon: videoIcon,
           headerShown: false,
-          tabBarShowLabel: true,
-        }}>
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarIcon: homeIcon,
-          }}
-        />
-        <Tab.Screen
-          name="Video"
-          component={Videos}
-          options={{
-            tabBarIcon: videoIcon,
-          }}
-        />
-        <Tab.Screen
-          name="Search"
-          component={Search}
-          options={{
-            // headerShown: false,
-            tabBarIcon: searchIcon,
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarIcon: searchIcon,
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+export function AppNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Root"
+        component={RootNavigation}
+        options={{
+          headerShown: false,
+          header: () => <Header />,
+        }}
+      />
+      <Stack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AboutUs"
+        component={AboutUs}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
   );
 }

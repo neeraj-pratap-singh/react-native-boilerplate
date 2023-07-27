@@ -13,6 +13,7 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import YoutubePlayer from '@dooboo/react-native-youtube-iframe';
+import {useNavigation} from '@react-navigation/native';
 interface HeaderProps {
   // Remove the prop since we are defining the function within the component
 }
@@ -20,6 +21,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLiveModalVisible, setLiveModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -41,8 +43,12 @@ const Header: React.FC<HeaderProps> = () => {
 
   const handleOptionSelection = (option: string) => {
     // Handle the selected option here based on option value
-    console.log('Selected option:', option);
     toggleModal();
+    if (option === 'Know About Us') {
+      navigation.navigate('AboutUs');
+    } else if (option === 'Contact Us') {
+      navigation.navigate('ContactUs');
+    }
   };
 
   const handleShareApp = async () => {

@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -7,12 +8,17 @@ interface AboutUsProps {
 }
 
 const AboutUs: React.FC<AboutUsProps> = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         {/* Back arrow icon (assuming you have a component for the back button) */}
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
           <Icon name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>About Us</Text>
@@ -66,6 +72,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
+    color: '#000',
     fontWeight: 'bold',
   },
   section: {
@@ -73,6 +80,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 16,
+    color: '#000',
     marginBottom: 8,
   },
 });

@@ -5,7 +5,6 @@ import {StyleSheet, ScrollView} from 'react-native';
 
 import {useTheme} from '../theme/useTheme';
 import Layout from '../components/Layout';
-import Header from '../components/Header';
 
 const Home = () => {
   const {theme} = useTheme();
@@ -13,7 +12,6 @@ const Home = () => {
 
   return (
     <Layout>
-      <Header />
       <ScrollView
         style={[styles.contentContainer, {backgroundColor: theme.layoutBg}]}>
         {/* code for home screen */}

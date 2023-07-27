@@ -6,7 +6,6 @@ import {StyleSheet, ScrollView} from 'react-native';
 import {useTheme} from '../theme/useTheme';
 import Layout from '../components/Layout';
 import SearchComponent from '../components/SearchComponent';
-import Header from '../components/Header';
 
 const Search = () => {
   const {theme} = useTheme();
@@ -19,7 +18,6 @@ const Search = () => {
 
   return (
     <Layout>
-      <Header />
       <ScrollView
         style={[styles.contentContainer, {backgroundColor: theme.layoutBg}]}>
         <SearchComponent onSearch={handleSearch} />

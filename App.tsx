@@ -8,16 +8,19 @@ import {ThemeProvider} from './app/theme/useTheme';
 import {NoInternetToast} from './app/components/NoInternet';
 
 // Navigation
-import RootNavigation from './app/routes/RootNavigation';
+import {AppNavigator} from './app/routes/RootNavigation';
 
 import StorybookUIRoot from './.storybook';
+import {NavigationContainer} from '@react-navigation/native';
 
 let Root = function App() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
         <ThemeProvider>
-          <RootNavigation />
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
           <NoInternetToast />
         </ThemeProvider>
       </Provider>
