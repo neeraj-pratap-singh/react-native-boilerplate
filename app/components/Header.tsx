@@ -61,6 +61,7 @@ const Header: React.FC<HeaderProps> = () => {
 
       if (response.data?.items?.length) {
         const liveVideoId = response.data.items[0]?.id?.videoId;
+        console.log('liveVideoId', liveVideoId);
         setLiveVideoData(prevData => ({...prevData, liveVideoId}));
       } else {
         setLiveVideoData(prevData => ({...prevData, liveVideoId: null}));
@@ -192,7 +193,7 @@ const Header: React.FC<HeaderProps> = () => {
           <YoutubePlayer
             height={Dimensions.get('window').height}
             play={true}
-            videoId="qABXWzPPKiQ" // Replace with the actual YouTube video ID you want to play
+            videoId={liveVideoData.liveVideoId} // Replace with the actual YouTube video ID you want to play
             // onChangeState={event => console.log('Video state:', event.state)}
           />
           <TouchableOpacity
