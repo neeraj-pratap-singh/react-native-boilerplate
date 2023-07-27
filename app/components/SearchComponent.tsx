@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import _ from 'lodash'; // Import lodash library
 
 interface SearchProps {
   onSearch: (query: string) => void;
@@ -9,8 +10,13 @@ interface SearchProps {
 const SearchComponent: React.FC<SearchProps> = ({onSearch}) => {
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Debounce the search function to reduce unnecessary API calls
+  const debouncedSearch = _.debounce((query: string) => {
+    onSearch(query);
+  }, 300); // Set the debounce delay here (300ms in this case)
+
   const handleSearch = () => {
-    onSearch(searchQuery);
+    debouncedSearch(searchQuery); // Call the debounced function instead of onSearch directly
   };
 
   return (
@@ -20,7 +26,9 @@ const SearchComponent: React.FC<SearchProps> = ({onSearch}) => {
         placeholder="Type your keyword"
         placeholderTextColor="#999"
         value={searchQuery}
-        onChangeText={setSearchQuery}
+        onChangeText={text => {
+          setSearchQuery(text);
+        }}
       />
       <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
         <Icon name="search" size={24} color="black" />
