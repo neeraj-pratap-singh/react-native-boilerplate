@@ -14,14 +14,24 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import YoutubePlayer from '@dooboo/react-native-youtube-iframe';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 interface HeaderProps {
   // Remove the prop since we are defining the function within the component
+}
+
+interface LiveVideoData {
+  liveVideoId: string | null;
+  channelId: string;
 }
 
 const Header: React.FC<HeaderProps> = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLiveModalVisible, setLiveModalVisible] = useState(false);
   const navigation = useNavigation();
+  const [liveVideoData, setLiveVideoData] = useState<LiveVideoData>({
+    liveVideoId: null,
+    channelId: 'UCL_3_9PhDyZXu1oexm8gtFQ', // Replace this with your YouTube channel ID
+  });
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -31,9 +41,38 @@ const Header: React.FC<HeaderProps> = () => {
     setLiveModalVisible(!isLiveModalVisible);
   };
 
+  const fetchLiveVideoId = async () => {
+    try {
+      setLiveModalVisible(true);
+      const response = await axios.get(
+        'https://www.googleapis.com/youtube/v3/search',
+        {
+          params: {
+            key: 'AIzaSyAetwy-pVtiQicM51c8EwVmIQMSOatmNxk', // Replace this with your YouTube Data API key
+            channelId: liveVideoData.channelId,
+            part: 'snippet',
+            eventType: 'live',
+            type: 'video',
+            maxResults: 1,
+          },
+        },
+      );
+
+      if (response.data?.items?.length) {
+        const liveVideoId = response.data.items[0]?.id?.videoId;
+        setLiveVideoData(prevData => ({...prevData, liveVideoId}));
+      } else {
+        setLiveVideoData(prevData => ({...prevData, liveVideoId: null}));
+      }
+    } catch (error) {
+      console.log('Error fetching live video ID: ', error);
+    }
+  };
+
   const handleRightImagePress = () => {
     // Handle the press event for the right-side image here
-    toggleLiveModal();
+    // toggleLiveModal();
+    fetchLiveVideoId();
     console.log('Right image pressed');
   };
 
@@ -134,13 +173,13 @@ const Header: React.FC<HeaderProps> = () => {
               <Text style={styles.optionText}>Rate App</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => handleOptionSelection('Notifications')}>
             <View style={styles.optionContainer}>
               <Icon name="notifications" size={24} color="black" />
               <Text style={styles.optionText}>Notifications</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </Modal>
       <Modal
@@ -153,7 +192,7 @@ const Header: React.FC<HeaderProps> = () => {
           <YoutubePlayer
             height={Dimensions.get('window').height}
             play={true}
-            videoId="Z6GpI1smQzc" // Replace with the actual YouTube video ID you want to play
+            videoId="qABXWzPPKiQ" // Replace with the actual YouTube video ID you want to play
             // onChangeState={event => console.log('Video state:', event.state)}
           />
           <TouchableOpacity
