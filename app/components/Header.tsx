@@ -9,6 +9,7 @@ import {
   Dimensions,
   Linking,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -120,7 +121,7 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <>
         <TouchableOpacity>
           <Image
@@ -186,8 +187,7 @@ const Header: React.FC<HeaderProps> = () => {
         isVisible={isLiveModalVisible}
         onBackdropPress={toggleLiveModal}
         style={styles.modal}
-        backdropOpacity={0.5}
-        supportedOrientations={['landscape']}>
+        backdropOpacity={0.5}>
         <View style={styles.modalLiveContainer}>
           <YoutubePlayer
             height={Dimensions.get('window').height}
@@ -205,7 +205,7 @@ const Header: React.FC<HeaderProps> = () => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

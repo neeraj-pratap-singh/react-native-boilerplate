@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Share, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Share,
+  Text,
+  SafeAreaView,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import WebView from 'react-native-webview';
@@ -32,7 +39,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({route}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -49,7 +56,7 @@ const NewsDetail: React.FC<NewsDetailProps> = ({route}) => {
 
       {/* HTML Content */}
       {/* <HTML source={{html: content}} /> */}
-    </View>
+    </SafeAreaView>
   );
 };
 
