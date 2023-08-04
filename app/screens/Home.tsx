@@ -7,6 +7,7 @@ import {
   Text,
   ActivityIndicator,
   Modal,
+  // ScrollView,
 } from 'react-native';
 import axios from 'axios';
 
@@ -21,6 +22,7 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  // const scrollRef = useRef();
 
   useEffect(() => {
     fetchDataFromApi();
@@ -34,6 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     if (selectedCategory) {
+      // scrollRef.current.scrollTo({y: 0, animated: true});
       fetchPostsForCategory(selectedCategory.category_id, page);
     }
   }, [selectedCategory, page]);
@@ -125,6 +128,7 @@ const Home = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
         />
+        {/* <ScrollView ref={scrollRef}> */}
         <FlatList
           data={posts}
           renderItem={renderPost}
@@ -132,6 +136,7 @@ const Home = () => {
           onEndReached={() => setPage(page + 1)}
           onEndReachedThreshold={0.5}
         />
+        {/* </ScrollView> */}
 
         <Modal transparent={true} animationType="none" visible={loading}>
           <View style={styles.modalBackground}>
