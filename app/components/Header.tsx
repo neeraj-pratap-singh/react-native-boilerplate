@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useState} from 'react';
 import {
   View,
@@ -73,8 +74,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   const handleRightImagePress = () => {
     // Handle the press event for the right-side image here
-    // toggleLiveModal();
-    fetchLiveVideoId();
+    // fetchLiveVideoId();
     console.log('Right image pressed');
   };
 
