@@ -154,25 +154,25 @@ const Header: React.FC<HeaderProps> = () => {
             onPress={() => handleOptionSelection('Know About Us')}>
             <View style={styles.optionContainer}>
               <Icon name="information-circle" size={24} color="black" />
-              <Text style={styles.optionText}>Know About Us</Text>
+              <Text style={styles.optionText}>हमारे बारे में जानें</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOptionSelection('Contact Us')}>
             <View style={styles.optionContainer}>
               <Icon name="mail" size={24} color="black" />
-              <Text style={styles.optionText}>Contact Us</Text>
+              <Text style={styles.optionText}>हमसे संपर्क करें</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShareApp}>
             <View style={styles.optionContainer}>
               <Icon name="share" size={24} color="black" />
-              <Text style={styles.optionText}>Share App</Text>
+              <Text style={styles.optionText}>ऐप शेयर करें</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => openAppRating()}>
             <View style={styles.optionContainer}>
               <Icon name="star" size={24} color="black" />
-              <Text style={styles.optionText}>Rate App</Text>
+              <Text style={styles.optionText}>एप्लिकेशन की रेटिंग दें</Text>
             </View>
           </TouchableOpacity>
           {/* <TouchableOpacity

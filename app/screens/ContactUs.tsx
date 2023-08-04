@@ -1,6 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  ScrollView,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface ContactUsProps {
@@ -24,92 +31,93 @@ const ContactUs: React.FC<ContactUsProps> = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
-        {/* Back arrow icon (assuming you have a component for the back button) */}
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}>
           <Icon name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Contact Us</Text>
-        {/* Empty view to align the title in the center */}
+        <Text style={styles.headerTitle}>हमसे संपर्क करें</Text>
         <View />
       </View>
-
-      {/* Address */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Address:</Text>
-        <Text style={styles.paragraph}>Madhya Pradesh (Bhopal)</Text>
-        <Text style={styles.paragraph}>
-          E-3 / 67, Arera Colony, Bhopal, Madhya Pradesh 462016
-        </Text>
-
-        <Text style={styles.subTitle}>Chhattisgarh (Raipur)</Text>
-        <Text style={styles.paragraph}>
-          14, Cristal Arcade, Lodhi Para Chowk, Shankar Nagar Road, Raipur
-          (Chhattisgarh)
-        </Text>
-      </View>
-
-      {/* Contact */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Contact:</Text>
-        <TouchableOpacity onPress={() => handleCall('+917556747000')}>
-          <Text style={styles.paragraph}>+91-755-6747000 to 99</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleEmail('bansal@gmail.com')}>
-          <Text style={styles.paragraph}>Email: bansal@gmail.com</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Contact Person */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Contact Person:</Text>
-        <Text style={styles.paragraph}>Sharad Dwivedi</Text>
-        <Text style={styles.paragraph}>Editor in Chief</Text>
-        <TouchableOpacity onPress={() => handleEmail('sharadneel@gmail.com')}>
-          <Text style={styles.paragraph}>E-Mail: sharadneel@gmail.com</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleEmail('sharad.dwivedi@bansalnews.com')}>
-          <Text style={styles.paragraph}>sharad.dwivedi@bansalnews.com</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Additional Contacts */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Additional Contacts:</Text>
-        <Text style={styles.paragraph}>
-          Ashish Mahendru (For Advertisement Only)
-        </Text>
-        <Text style={styles.paragraph}>Head Business – Corporate & State</Text>
-        <TouchableOpacity
-          onPress={() => handleEmail('ashish.mahendru@bansalnews.org')}>
+      <ScrollView>
+        {/* Address */}
+        <View style={styles.section}>
+          <Text style={styles.title}>पता:</Text>
+          <Text style={styles.paragraph}>मध्य प्रदेश (भोपाल)</Text>
           <Text style={styles.paragraph}>
-            E-Mail – ashish.mahendru@bansalnews.org
+            ई-3 / 67, अरेरा कालोनी, भोपाल, मध्य प्रदेश 462016
           </Text>
-        </TouchableOpacity>
 
-        <Text>Ashok Sitoke (For Govt. Advertisement Only)</Text>
-        <Text>Govt. Advertisement Sales, Accounts and Administration Head</Text>
-        <TouchableOpacity
-          onPress={() => handleEmail('bansalnewsmarketing@gmail.com')}>
+          <Text style={styles.subTitle}>छत्तीसगढ़ (रायपुर)</Text>
           <Text style={styles.paragraph}>
-            E-Mail – bansalnewsmarketing@gmail.com
+            14, क्रिस्टल आर्केड, लोधी पारा चौक, शंकर नगर रोड, रायपुर (छत्तीसगढ़)
           </Text>
-        </TouchableOpacity>
-      </View>
+        </View>
 
-      {/* Website */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Website:</Text>
-        <TouchableOpacity
-          onPress={() => handleWebsite('https://www.bansalnews.com')}>
-          <Text style={styles.paragraph}>www.bansalnews.com</Text>
-        </TouchableOpacity>
-      </View>
+        {/* Contact */}
+        <View style={styles.section}>
+          <Text style={styles.title}>संपर्क:</Text>
+          <TouchableOpacity onPress={() => handleCall('+917556747000')}>
+            <Text style={styles.paragraph}>+91-755-6747000 से 99 तक</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleEmail('bansal@gmail.com')}>
+            <Text style={styles.paragraph}>ईमेल: bansal@gmail.com</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Contact Person */}
+        <View style={styles.section}>
+          <Text style={styles.title}>संपर्क व्यक्ति:</Text>
+          <Text style={styles.paragraph}>शरद द्विवेदी</Text>
+          <Text style={styles.paragraph}>संपादक मुख्य</Text>
+          <TouchableOpacity onPress={() => handleEmail('sharadneel@gmail.com')}>
+            <Text style={styles.paragraph}>ईमेल: sharadneel@gmail.com</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleEmail('sharad.dwivedi@bansalnews.com')}>
+            <Text style={styles.paragraph}>sharad.dwivedi@bansalnews.com</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Additional Contacts */}
+        <View style={styles.section}>
+          <Text style={styles.title}>अतिरिक्त संपर्क:</Text>
+          <Text style={styles.paragraph}>
+            आशीष महेंद्रू (केवल विज्ञापन के लिए)
+          </Text>
+          <Text style={styles.paragraph}>हेड बिजनेस - कॉर्पोरेट और राज्य</Text>
+          <TouchableOpacity
+            onPress={() => handleEmail('ashish.mahendru@bansalnews.org')}>
+            <Text style={styles.paragraph}>
+              ईमेल - ashish.mahendru@bansalnews.org
+            </Text>
+          </TouchableOpacity>
+
+          <Text style={styles.paragraph}>
+            अशोक सितोके (केवल सरकारी विज्ञापन के लिए)
+          </Text>
+          <Text style={styles.paragraph}>
+            सरकारी विज्ञापन बिक्री, लेखा और प्रशासन प्रमुख
+          </Text>
+          <TouchableOpacity
+            onPress={() => handleEmail('bansalnewsmarketing@gmail.com')}>
+            <Text style={styles.paragraph}>
+              ईमेल - bansalnewsmarketing@gmail.com
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Website */}
+        <View style={styles.section}>
+          <Text style={styles.title}>वेबसाइट:</Text>
+          <TouchableOpacity
+            onPress={() => handleWebsite('https://www.bansalnews.com')}>
+            <Text style={styles.paragraph}>www.bansalnews.com</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };

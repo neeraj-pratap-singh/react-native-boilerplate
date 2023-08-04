@@ -12,46 +12,46 @@ const AboutUs: React.FC<AboutUsProps> = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
-        {/* Back arrow icon (assuming you have a component for the back button) */}
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}>
           <Icon name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>About Us</Text>
-        {/* Empty view to align the title in the center */}
+        <Text style={styles.headerTitle}>हमारे बारे में</Text>
         <View />
       </View>
 
       {/* Details */}
       <View style={styles.section}>
         <Text style={styles.paragraph}>
-          Established in 2011, BANSAL NEWS is a leading regional satellite news
-          channel of Madhya Pradesh & Chhattisgarh.
+          2011 में स्थापित, बंसल न्यूज़ मध्य प्रदेश और छत्तीसगढ़ के प्रमुख
+          क्षेत्रीय सैटेलाइट न्यूज़ चैनल है, जो मध्य प्रदेश और छत्तीसगढ़ की
+          प्रमुख स्थानीय समाचारों की पेशेवर दृष्टि से प्रसारण करता है।
         </Text>
 
         <Text style={styles.paragraph}>
-          It has 3 news studios strategically located in Bhopal, Indore, and
-          Raipur, these being the three prominent cities of MP & Chhattisgarh
-          are much more accessible and hyper-active cities of the two states.
-          With a force of over 200 news stringers, Bansal News is earmarked to
-          cover each activity of public significance with utmost sincerity.
+          इसमें तीन समाचार स्टूडियो हैं जिन्हें ब्वॉपाल, इंदौर और रायपुर में
+          रणनीतिक रूप से स्थित किया गया है, ये मप्र और छत्तीसगढ़ के तीन प्रमुख
+          शहर हैं जो दो राज्यों के हायपर-एक्टिव और ज्यादा पहुंचने वाले शहर हैं।
+          200 से ज्यादा समाचार स्ट्रिंगर के साथ, बंसल न्यूज़ को प्रमुखता से
+          सार्वजनिक महत्व की हर गतिविधि की कवर करने का काम किया जाता है।
         </Text>
 
         <Text style={styles.paragraph}>
-          Bansal news is available on local cable networks and major DTH service
-          providers namely Tata Sky (1162), Airtel Digital TV (365), Hathway MP
-          (223), Den Network – 354, EMT – 216, ACN (MP) – 216, Digiana – 347,
-          Nxt Digital-818, BCC Network – 345, Grand ACN (CG) – 164, Grand CG –
-          333, Hathway (CG) - 220.
+          बंसल न्यूज़ स्थानीय केबल नेटवर्क और प्रमुख डीटीएच सेवा प्रदाताओं पर
+          उपलब्ध है, जैसे कि टाटा स्काई (1162), एयरटेल डिजिटल टीवी (365), हथवे
+          मध्य प्रदेश (223), डेन नेटवर्क - 354, ईएमटी - 216, एसीएन (मध्य प्रदेश)
+          - 216, डिजिआना - 347, नेक्स्ट डिजिटल - 818, बीसीसी नेटवर्क - 345,
+          ग्रैंड एसीएन (छत्तीसगढ़) - 164, ग्रैंड छत्तीसगढ़ - 333, हथवे
+          (छत्तीसगढ़) - 220।
         </Text>
 
         <Text style={styles.paragraph}>
-          Viewership: Standing strongly with the trust of 25+ lakhs viewers PAN
-          India. We are the fastest and most trusted news channel of MP and CG.
+          दर्शकों की संख्या: 25+ लाख दर्शकों की विश्वासपूर्णता के साथ भारत भर
+          में दृढ़ता से खड़ा है। हम मध्य प्रदेश और छत्तीसगढ़ के सबसे तेज़ और
+          सर्वविश्वसनीय न्यूज़ चैनल हैं।
         </Text>
       </View>
     </View>
