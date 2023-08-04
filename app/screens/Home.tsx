@@ -1,10 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, View, FlatList, Text} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Text,
+  ActivityIndicator,
+  Modal,
+} from 'react-native';
 import axios from 'axios';
 
 import {useTheme} from '../theme/useTheme';
 import Layout from '../components/Layout';
-import NewsItem from '../components/NewsItem'; // Import NewsItem component
+import NewsItem from '../components/NewsItem';
 
 const Home = () => {
   const {theme} = useTheme();
@@ -12,6 +20,7 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchDataFromApi();
@@ -31,6 +40,7 @@ const Home = () => {
 
   const fetchDataFromApi = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(
         'https://bansalnews.com/wp-json/wl/v1/custom_menu',
       );
@@ -39,23 +49,33 @@ const Home = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchPostsForCategory = async (categoryId, pageNumber) => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `https://bansalnews.com/wp-json/wl/v1/category_posts/${categoryId}/${pageNumber}`,
       );
       if (response?.data) {
-        setPosts(response.data.posts);
+        if (pageNumber === 1) {
+          setPosts(response.data.posts);
+        } else {
+          setPosts(prevPosts => [...prevPosts, ...response.data.posts]);
+        }
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCategoryPress = item => {
+    setPage(1);
     setSelectedCategory(item);
   };
 
@@ -80,23 +100,24 @@ const Home = () => {
     );
   };
 
-  const renderPost = ({item}) => {
-    return (
-      <NewsItem
-        key={item.id}
-        title={item.title}
-        featured_image={item.featured_image}
-        content={item.content}
-        timestamp={item.publish_date}
-        url={item.url}
-      />
-    );
-  };
+  const renderPost = ({item}) => (
+    <NewsItem
+      key={item.id}
+      title={item.title}
+      featured_image={item.featured_image}
+      content={item.content}
+      timestamp={item.publish_date}
+      url={item.url}
+    />
+  );
 
   return (
     <Layout>
       <View
-        style={[styles.contentContainer, {backgroundColor: theme.layoutBg}]}>
+        style={[
+          styles.contentContainer,
+          {backgroundColor: theme.layoutBg, paddingTop: 10},
+        ]}>
         <FlatList
           data={categories}
           renderItem={renderItem}
@@ -111,6 +132,18 @@ const Home = () => {
           onEndReached={() => setPage(page + 1)}
           onEndReachedThreshold={0.5}
         />
+
+        <Modal transparent={true} animationType="none" visible={loading}>
+          <View style={styles.modalBackground}>
+            <View style={styles.activityIndicatorWrapper}>
+              <ActivityIndicator
+                animating={loading}
+                size="large"
+                color="#0000ff"
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     </Layout>
   );
@@ -138,6 +171,22 @@ const styles = StyleSheet.create({
   },
   selectedTabText: {
     color: '#FFF',
+  },
+  modalBackground: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    backgroundColor: '#00000040',
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
 });
 
