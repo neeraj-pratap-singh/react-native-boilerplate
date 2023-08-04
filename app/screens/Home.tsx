@@ -7,7 +7,6 @@ import {
   Text,
   ActivityIndicator,
   Modal,
-  // ScrollView,
 } from 'react-native';
 import axios from 'axios';
 
@@ -19,10 +18,10 @@ const Home = () => {
   const {theme} = useTheme();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  // const scrollRef = useRef();
 
   useEffect(() => {
     fetchDataFromApi();
@@ -35,11 +34,14 @@ const Home = () => {
   }, [categories]);
 
   useEffect(() => {
-    if (selectedCategory) {
-      // scrollRef.current.scrollTo({y: 0, animated: true});
-      fetchPostsForCategory(selectedCategory.category_id, page);
+    let categoryId = selectedCategory?.category_id;
+    if (selectedSubCategory) {
+      categoryId = selectedSubCategory.category_id;
     }
-  }, [selectedCategory, page]);
+    if (categoryId) {
+      fetchPostsForCategory(categoryId, page);
+    }
+  }, [selectedCategory, selectedSubCategory, page]);
 
   const fetchDataFromApi = async () => {
     try {
@@ -80,28 +82,51 @@ const Home = () => {
   const handleCategoryPress = item => {
     setPage(1);
     setSelectedCategory(item);
+    setSelectedSubCategory(item.sub_menu[0] || null);
   };
 
-  const renderItem = ({item}) => {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.tab,
-          item.category_id === selectedCategory?.category_id &&
-            styles.selectedTab,
-        ]}
-        onPress={() => handleCategoryPress(item)}>
-        <Text
-          style={[
-            styles.tabText,
-            item.category_id === selectedCategory?.category_id &&
-              styles.selectedTabText,
-          ]}>
-          {item.menu}
-        </Text>
-      </TouchableOpacity>
-    );
+  const handleSubCategoryPress = item => {
+    setPage(1);
+    setSelectedSubCategory(item);
   };
+
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      style={[
+        styles.tab,
+        item.category_id === selectedCategory?.category_id &&
+          styles.selectedTab,
+      ]}
+      onPress={() => handleCategoryPress(item)}>
+      <Text
+        style={[
+          styles.tabText,
+          item.category_id === selectedCategory?.category_id &&
+            styles.selectedTabText,
+        ]}>
+        {item.menu}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const renderSubItem = ({item}) => (
+    <TouchableOpacity
+      style={[
+        styles.tab,
+        item.category_id === selectedSubCategory?.category_id &&
+          styles.selectedTab,
+      ]}
+      onPress={() => handleSubCategoryPress(item)}>
+      <Text
+        style={[
+          styles.tabText,
+          item.category_id === selectedSubCategory?.category_id &&
+            styles.selectedTabText,
+        ]}>
+        {item.menu}
+      </Text>
+    </TouchableOpacity>
+  );
 
   const renderPost = ({item}) => (
     <NewsItem
@@ -128,7 +153,16 @@ const Home = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
         />
-        {/* <ScrollView ref={scrollRef}> */}
+        {selectedCategory?.sub_menu?.length > 0 && (
+          <FlatList
+            style={{marginTop: 8}}
+            data={selectedCategory.sub_menu}
+            renderItem={renderSubItem}
+            keyExtractor={item => item.category_id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
         <FlatList
           data={posts}
           renderItem={renderPost}
@@ -136,7 +170,6 @@ const Home = () => {
           onEndReached={() => setPage(page + 1)}
           onEndReachedThreshold={0.5}
         />
-        {/* </ScrollView> */}
 
         <Modal transparent={true} animationType="none" visible={loading}>
           <View style={styles.modalBackground}>
