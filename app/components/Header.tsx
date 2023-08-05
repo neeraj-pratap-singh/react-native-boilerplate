@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useState} from 'react';
 import {
   View,
@@ -61,6 +62,7 @@ const Header: React.FC<HeaderProps> = () => {
 
       if (response.data?.items?.length) {
         const liveVideoId = response.data.items[0]?.id?.videoId;
+        console.log('liveVideoId', liveVideoId);
         setLiveVideoData(prevData => ({...prevData, liveVideoId}));
       } else {
         setLiveVideoData(prevData => ({...prevData, liveVideoId: null}));
@@ -72,8 +74,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   const handleRightImagePress = () => {
     // Handle the press event for the right-side image here
-    // toggleLiveModal();
-    fetchLiveVideoId();
+    // fetchLiveVideoId();
     console.log('Right image pressed');
   };
 
@@ -153,25 +154,25 @@ const Header: React.FC<HeaderProps> = () => {
             onPress={() => handleOptionSelection('Know About Us')}>
             <View style={styles.optionContainer}>
               <Icon name="information-circle" size={24} color="black" />
-              <Text style={styles.optionText}>Know About Us</Text>
+              <Text style={styles.optionText}>हमारे बारे में जानें</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOptionSelection('Contact Us')}>
             <View style={styles.optionContainer}>
               <Icon name="mail" size={24} color="black" />
-              <Text style={styles.optionText}>Contact Us</Text>
+              <Text style={styles.optionText}>हमसे संपर्क करें</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleShareApp}>
             <View style={styles.optionContainer}>
               <Icon name="share" size={24} color="black" />
-              <Text style={styles.optionText}>Share App</Text>
+              <Text style={styles.optionText}>ऐप शेयर करें</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => openAppRating()}>
             <View style={styles.optionContainer}>
               <Icon name="star" size={24} color="black" />
-              <Text style={styles.optionText}>Rate App</Text>
+              <Text style={styles.optionText}>एप्लिकेशन की रेटिंग दें</Text>
             </View>
           </TouchableOpacity>
           {/* <TouchableOpacity
@@ -192,7 +193,7 @@ const Header: React.FC<HeaderProps> = () => {
           <YoutubePlayer
             height={Dimensions.get('window').height}
             play={true}
-            videoId="qABXWzPPKiQ" // Replace with the actual YouTube video ID you want to play
+            videoId={liveVideoData.liveVideoId} // Replace with the actual YouTube video ID you want to play
             // onChangeState={event => console.log('Video state:', event.state)}
           />
           <TouchableOpacity

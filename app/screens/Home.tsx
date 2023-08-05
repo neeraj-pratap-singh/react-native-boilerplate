@@ -1,52 +1,231 @@
-import React from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
-
-// import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Text,
+  ActivityIndicator,
+  Modal,
+} from 'react-native';
+import axios from 'axios';
 
 import {useTheme} from '../theme/useTheme';
 import Layout from '../components/Layout';
+import NewsItem from '../components/NewsItem';
 
 const Home = () => {
   const {theme} = useTheme();
-  //   const dispatch = useDispatch();
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchDataFromApi();
+  }, []);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      handleCategoryPress(categories[0]);
+    }
+  }, [categories]);
+
+  useEffect(() => {
+    let categoryId = selectedCategory?.category_id;
+    if (selectedSubCategory) {
+      categoryId = selectedSubCategory.category_id;
+    }
+    if (categoryId) {
+      fetchPostsForCategory(categoryId, page);
+    }
+  }, [selectedCategory, selectedSubCategory, page]);
+
+  const fetchDataFromApi = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        'https://bansalnews.com/wp-json/wl/v1/custom_menu',
+      );
+      if (response?.data) {
+        setCategories(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPostsForCategory = async (categoryId, pageNumber) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://bansalnews.com/wp-json/wl/v1/category_posts/${categoryId}/${pageNumber}`,
+      );
+      if (response?.data) {
+        if (pageNumber === 1) {
+          setPosts(response.data.posts);
+        } else {
+          setPosts(prevPosts => [...prevPosts, ...response.data.posts]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCategoryPress = item => {
+    setPage(1);
+    setSelectedCategory(item);
+    setSelectedSubCategory(item.sub_menu[0] || null);
+  };
+
+  const handleSubCategoryPress = item => {
+    setPage(1);
+    setSelectedSubCategory(item);
+  };
+
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      style={[
+        styles.tab,
+        item.category_id === selectedCategory?.category_id &&
+          styles.selectedTab,
+      ]}
+      onPress={() => handleCategoryPress(item)}>
+      <Text
+        style={[
+          styles.tabText,
+          item.category_id === selectedCategory?.category_id &&
+            styles.selectedTabText,
+        ]}>
+        {item.menu}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const renderSubItem = ({item}) => (
+    <TouchableOpacity
+      style={[
+        styles.tab,
+        item.category_id === selectedSubCategory?.category_id &&
+          styles.selectedTab,
+      ]}
+      onPress={() => handleSubCategoryPress(item)}>
+      <Text
+        style={[
+          styles.tabText,
+          item.category_id === selectedSubCategory?.category_id &&
+            styles.selectedTabText,
+        ]}>
+        {item.menu}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const renderPost = ({item}) => (
+    <NewsItem
+      key={item.id}
+      title={item.title}
+      featured_image={item.featured_image}
+      content={item.content}
+      timestamp={item.publish_date}
+      url={item.url}
+    />
+  );
 
   return (
     <Layout>
-      <ScrollView
-        style={[styles.contentContainer, {backgroundColor: theme.layoutBg}]}>
-        {/* code for home screen */}
-      </ScrollView>
+      <View
+        style={[
+          styles.contentContainer,
+          {backgroundColor: theme.layoutBg, paddingTop: 10},
+        ]}>
+        <FlatList
+          data={categories}
+          renderItem={renderItem}
+          keyExtractor={item => item.category_id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+        {selectedCategory?.sub_menu?.length > 0 && (
+          <FlatList
+            style={{marginTop: 8}}
+            data={selectedCategory.sub_menu}
+            renderItem={renderSubItem}
+            keyExtractor={item => item.category_id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
+        <FlatList
+          data={posts}
+          renderItem={renderPost}
+          keyExtractor={item => item.id.toString()}
+          onEndReached={() => setPage(page + 1)}
+          onEndReachedThreshold={0.5}
+        />
+
+        <Modal transparent={true} animationType="none" visible={loading}>
+          <View style={styles.modalBackground}>
+            <View style={styles.activityIndicatorWrapper}>
+              <ActivityIndicator
+                animating={loading}
+                size="large"
+                color="#0000ff"
+              />
+            </View>
+          </View>
+        </Modal>
+      </View>
     </Layout>
   );
 };
 
-export default Home;
-
 const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
-    paddingVertical: 16,
     paddingHorizontal: 12,
   },
-  header: {
-    paddingLeft: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 40,
-  },
-  btnHamburger: {
+  tab: {
     paddingHorizontal: 20,
     paddingVertical: 10,
+    marginHorizontal: 8,
+    borderRadius: 8,
+    backgroundColor: '#e0e0e0',
   },
-  avatarRow: {
-    flexDirection: 'row',
-    marginBottom: 20,
+  selectedTab: {
+    backgroundColor: '#007AFF',
   },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
-    marginRight: 10,
+  tabText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  selectedTabText: {
+    color: '#FFF',
+  },
+  modalBackground: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    backgroundColor: '#00000040',
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
 });
+
+export default Home;
