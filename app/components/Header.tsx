@@ -149,7 +149,7 @@ const Header: React.FC<HeaderProps> = () => {
         onBackdropPress={toggleModal}
         style={styles.modal}
         backdropOpacity={0.5}>
-        <View style={styles.modalContainer}>
+        <SafeAreaView style={styles.modalContainer}>
           <TouchableOpacity
             onPress={() => handleOptionSelection('Know About Us')}>
             <View style={styles.optionContainer}>
@@ -182,7 +182,7 @@ const Header: React.FC<HeaderProps> = () => {
               <Text style={styles.optionText}>Notifications</Text>
             </View>
           </TouchableOpacity> */}
-        </View>
+        </SafeAreaView>
       </Modal>
       <Modal
         isVisible={isLiveModalVisible}
