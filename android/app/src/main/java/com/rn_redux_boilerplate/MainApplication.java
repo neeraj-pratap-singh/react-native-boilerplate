@@ -1,4 +1,4 @@
-package com.rn_redux_boilerplate;
+package com.appbazooka.bansalnews;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
